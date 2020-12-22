@@ -13,6 +13,11 @@ const breakpoints = createBreakpoints({
 const theme = extendTheme({
   colors: {
     black: '#16161D',
+    accent: '#273967',
+    major: '#2b4063',
+    translucent: '#8c92ff80',
+
+    cardBg: '#435ea261',
   },
   fonts,
   breakpoints,
@@ -35,6 +40,16 @@ const theme = extendTheme({
       ),
       viewBox: '0 0 3000 3163',
     },
+  },
+  styles: {
+    global: () => ({
+      'html, body': {
+        minHeight: '100vh',
+        backgroundColor: '#2b4063',
+        color: '#ffffffcc',
+        // userSelect: 'none',
+      },
+    }),
   },
 })
 

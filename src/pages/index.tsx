@@ -1,54 +1,25 @@
-import {
-  Link as ChakraLink,
-  Text,
-  Code,
-  List,
-  ListIcon,
-  ListItem,
-} from '@chakra-ui/react'
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons'
-import { Hero } from '../components/Hero'
-import { Container } from '../components/Container'
-import { Main } from '../components/Main'
-import { DarkModeSwitch } from '../components/DarkModeSwitch'
-import { CTA } from '../components/CTA'
-import { Footer } from '../components/Footer'
+import { Box } from '@chakra-ui/react'
+import React from 'react'
+import NavBar from '../components/NavBar'
+import GDSwiper from '../components/Swiper'
+import VideoCardList from '../components/VideoCard'
 
 const Index = () => (
-  <Container height="100vh">
-    <Hero />
-    <Main>
-      <Text>
-        Example repository of <Code>Next.js</Code> + <Code>chakra-ui</Code>.
-      </Text>
+  <>
+    <NavBar />
+    <GDSwiper />
+    <VideoCardList />
 
-      <List spacing={3} my={0}>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink
-            isExternal
-            href="https://chakra-ui.com"
-            flexGrow={1}
-            mr={2}
-          >
-            Chakra UI <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-        <ListItem>
-          <ListIcon as={CheckCircleIcon} color="green.500" />
-          <ChakraLink isExternal href="https://nextjs.org" flexGrow={1} mr={2}>
-            Next.js <LinkIcon />
-          </ChakraLink>
-        </ListItem>
-      </List>
-    </Main>
+    <Box
+      h="300px"
+      my={30}
+      height="calc((1 / 3.5) * 100vw)"
+      max-height="calc(100vh - 240px)"
+      background="url(https://0c86e2d1-madman-com-au.akamaized.net/shows/attack-on-titan_stage-key-art-clean-large_62135.jpeg) center no-repeat"
+    ></Box>
 
-    <DarkModeSwitch />
-    <Footer>
-      <Text>Next ❤️ Chakra</Text>
-    </Footer>
-    <CTA />
-  </Container>
+    <VideoCardList />
+  </>
 )
 
 export default Index

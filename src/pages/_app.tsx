@@ -1,18 +1,38 @@
+import React from 'react'
 import { ChakraProvider, ColorModeProvider } from '@chakra-ui/react'
-
+import { Provider, dedupExchange, fetchExchange, createClient } from 'urql'
+import { cacheExchange } from '@urql/exchange-graphcache'
 import theme from '../theme'
+import 'focus-visible/dist/focus-visible'
 
-function MyApp({ Component, pageProps }) {
+const cache = cacheExchange({
+  // updates: {
+  //   Mutation: {
+  //     login() {},
+  //   },
+  // },
+})
+
+const client = createClient({
+  url: 'http://localhost:4000/graphql',
+  exchanges: [dedupExchange, cache, fetchExchange],
+})
+
+function MyApp({ Component, pageProps }: any) {
   return (
-    <ChakraProvider resetCSS theme={theme}>
-      <ColorModeProvider
-        options={{
-          useSystemColorMode: true,
-        }}
-      >
-        <Component {...pageProps} />
-      </ColorModeProvider>
-    </ChakraProvider>
+    <Provider value={client}>
+      <ChakraProvider resetCSS theme={theme}>
+        <ColorModeProvider
+          value="dark"
+          options={{
+            initialColorMode: 'dark',
+            // useSystemColorMode: true,
+          }}
+        >
+          <Component {...pageProps} />
+        </ColorModeProvider>
+      </ChakraProvider>
+    </Provider>
   )
 }
 
