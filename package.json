@@ -24,6 +24,7 @@
     "react-id-swiper": "^4.0.0",
     "react-swipeable-views": "^0.13.9",
     "swiper": "^6.4.5",
+    "typeorm": "^0.2.29",
     "urql": "^1.11.4"
   },
   "license": "MIT",
