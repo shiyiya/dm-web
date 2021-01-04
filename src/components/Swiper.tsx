@@ -7,7 +7,6 @@ import { ArrowForwardIcon } from '@chakra-ui/icons'
 
 export const SlideContainer: React.FC = (props) => (
   <Box
-    className="flag"
     css={css`
       position: relative;
       &::after {

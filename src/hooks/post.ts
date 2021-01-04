@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Post, PostsMutation, usePostsMutation } from '../generated/graphql'
+import { PostsMutation, usePostsMutation } from '../generated/graphql'
 
 export function useTagsPostApi(tags: string[]) {
   const [videos, setVideos] = useState<PostsMutation | null>()

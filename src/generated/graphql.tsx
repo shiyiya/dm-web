@@ -1,478 +1,557 @@
-import { gql } from '@apollo/client'
-import * as Apollo from '@apollo/client'
-import * as ApolloReactHoc from '@apollo/client/react/hoc'
-export type Maybe<T> = T | null
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K]
-}
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> }
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
   /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any
-}
+  DateTime: any;
+};
 
 export type _BaseEntity = {
-  __typename?: '_BaseEntity'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-}
+  __typename?: '_BaseEntity';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+};
+
 
 export type Category = {
-  __typename?: 'Category'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-  name: Scalars['String']
-  description?: Maybe<Scalars['String']>
-}
+  __typename?: 'Category';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+};
 
 export type Tag = {
-  __typename?: 'Tag'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-  name: Scalars['String']
-  description?: Maybe<Scalars['String']>
-}
+  __typename?: 'Tag';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+};
 
 export type User = {
-  __typename?: 'User'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-  roleLevel: Scalars['Int']
-  resetPWDToken?: Maybe<Scalars['String']>
-  username?: Maybe<Scalars['String']>
-  email: Scalars['String']
-  password: Scalars['String']
-  avatar?: Maybe<Scalars['String']>
-  bio?: Maybe<Scalars['String']>
-  posts?: Maybe<Array<Post>>
-  appraisals?: Maybe<Array<Appraisal>>
-}
+  __typename?: 'User';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  roleLevel: Scalars['Int'];
+  resetPWDToken?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  posts?: Maybe<Array<Post>>;
+  appraisals?: Maybe<Array<Appraisal>>;
+};
 
 export type Video = {
-  __typename?: 'Video'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-  title: Scalars['String']
-  playUrl: Scalars['String']
-  episode: Scalars['Int']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  bindPost: Post
-}
+  __typename?: 'Video';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  title: Scalars['String'];
+  playUrl: Scalars['String'];
+  episode: Scalars['Int'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  bindPost: Post;
+};
 
 export type Post = {
-  __typename?: 'Post'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-  title: Scalars['String']
-  subtitle?: Maybe<Scalars['String']>
-  content?: Maybe<Scalars['String']>
-  cover: Scalars['String']
-  type: Scalars['Int']
-  creator: User
-  videos?: Maybe<Array<Video>>
-  appraisals?: Maybe<Array<Appraisal>>
-  categories?: Maybe<Array<Category>>
-  tags?: Maybe<Array<Tag>>
-}
+  __typename?: 'Post';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  title: Scalars['String'];
+  subtitle?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  type: Scalars['Int'];
+  creator: User;
+  videos?: Maybe<Array<Video>>;
+  appraisals?: Maybe<Array<Appraisal>>;
+  categories?: Maybe<Array<Category>>;
+  tags?: Maybe<Array<Tag>>;
+};
 
 export type Appraisal = {
-  __typename?: 'Appraisal'
-  id: Scalars['ID']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  status: Scalars['Int']
-  content: Scalars['String']
-  rate: Scalars['Int']
-  bindPostId: Scalars['String']
-  bindPost: Post
-  creatorId: Scalars['String']
-  creator: User
-}
+  __typename?: 'Appraisal';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  content: Scalars['String'];
+  rate: Scalars['Int'];
+  bindPostId: Scalars['String'];
+  bindPost: Post;
+  creatorId: Scalars['String'];
+  creator: User;
+};
 
 export type UserResponse = {
-  __typename?: 'UserResponse'
-  error?: Maybe<Scalars['String']>
-  user?: Maybe<User>
-}
+  __typename?: 'UserResponse';
+  error?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
 
 export type FieldError = {
-  __typename?: 'FieldError'
-  field: Scalars['String']
-  message: Scalars['String']
-}
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
 
 export type RegisterResonse = {
-  __typename?: 'RegisterResonse'
-  errors?: Maybe<Array<FieldError>>
-  user?: Maybe<User>
-}
+  __typename?: 'RegisterResonse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
 
 export type CreateCategoryArgs = {
-  name: Scalars['String']
-  description?: Maybe<Scalars['String']>
-}
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+};
 
 export type EditCategoryArgs = {
-  name: Scalars['String']
-  description?: Maybe<Scalars['String']>
-  id: Scalars['String']
-}
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
 
 export type DelCategoryArgs = {
-  categoryId: Scalars['String']
-  postId: Scalars['String']
-}
+  categoryId: Scalars['String'];
+  postId: Scalars['String'];
+};
 
 export type OptionalVideoField = {
-  title: Scalars['String']
-  playUrl: Scalars['String']
-  episode: Scalars['Float']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-}
+  title: Scalars['String'];
+  playUrl: Scalars['String'];
+  episode: Scalars['Float'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+};
 
 export type CreateVideoArgsWithPost = {
-  title: Scalars['String']
-  playUrl: Scalars['String']
-  episode: Scalars['Float']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  bindPostId?: Maybe<Scalars['String']>
-}
+  title: Scalars['String'];
+  playUrl: Scalars['String'];
+  episode: Scalars['Float'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  bindPostId?: Maybe<Scalars['String']>;
+};
 
 export type CreateVideoArgs = {
-  title: Scalars['String']
-  playUrl: Scalars['String']
-  episode: Scalars['Float']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  bindPostId?: Maybe<Scalars['String']>
-}
+  title: Scalars['String'];
+  playUrl: Scalars['String'];
+  episode: Scalars['Float'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  bindPostId?: Maybe<Scalars['String']>;
+};
 
 export type EditVideoArgs = {
-  title: Scalars['String']
-  playUrl: Scalars['String']
-  episode: Scalars['Float']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  id: Scalars['String']
-}
+  title: Scalars['String'];
+  playUrl: Scalars['String'];
+  episode: Scalars['Float'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
 
 export type OptionalPostField = {
-  title: Scalars['String']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['Int']>
-  categoriesId?: Maybe<Array<Scalars['String']>>
-  tagsId?: Maybe<Array<Scalars['String']>>
-}
+  title: Scalars['String'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['Int']>;
+  categoriesId?: Maybe<Array<Scalars['String']>>;
+  tagsId?: Maybe<Array<Scalars['String']>>;
+};
 
 export type CreatePostArgs = {
-  title: Scalars['String']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['Int']>
-  categoriesId?: Maybe<Array<Scalars['String']>>
-  tagsId?: Maybe<Array<Scalars['String']>>
-  creatorId: Scalars['String']
-  videos?: Maybe<Array<CreateVideoArgsWithPost>>
-}
+  title: Scalars['String'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['Int']>;
+  categoriesId?: Maybe<Array<Scalars['String']>>;
+  tagsId?: Maybe<Array<Scalars['String']>>;
+  creatorId: Scalars['String'];
+  videos?: Maybe<Array<CreateVideoArgsWithPost>>;
+};
 
 export type UpdatePostArgs = {
-  title: Scalars['String']
-  subtitle?: Maybe<Scalars['String']>
-  cover?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['Int']>
-  categoriesId?: Maybe<Array<Scalars['String']>>
-  tagsId?: Maybe<Array<Scalars['String']>>
-  id: Scalars['String']
-}
+  title: Scalars['String'];
+  subtitle?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['Int']>;
+  categoriesId?: Maybe<Array<Scalars['String']>>;
+  tagsId?: Maybe<Array<Scalars['String']>>;
+  id: Scalars['String'];
+};
 
 export type QueryPostsArgs = {
-  id?: Maybe<Scalars['String']>
-  title?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['Int']>
-  creatorId?: Maybe<Scalars['String']>
-  categoriesId?: Maybe<Array<Scalars['String']>>
-  tagsId?: Maybe<Array<Scalars['String']>>
-  offset?: Maybe<Scalars['Int']>
-  limit?: Maybe<Scalars['Int']>
-}
+  id?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['Int']>;
+  creatorId?: Maybe<Scalars['String']>;
+  categoriesId?: Maybe<Array<Scalars['String']>>;
+  tagsId?: Maybe<Array<Scalars['String']>>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
 
 export type CreateTagArgs = {
-  name: Scalars['String']
-  description?: Maybe<Scalars['String']>
-}
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+};
 
 export type EditTagArgs = {
-  name: Scalars['String']
-  description?: Maybe<Scalars['String']>
-  id: Scalars['String']
-}
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+};
 
 export type DelTagArgs = {
-  tagId: Scalars['String']
-  postId: Scalars['String']
-}
+  tagId: Scalars['String'];
+  postId: Scalars['String'];
+};
 
 export type UserRegisterInput = {
-  username?: Maybe<Scalars['String']>
-  email: Scalars['String']
-  password: Scalars['String']
-  bio?: Maybe<Scalars['String']>
-  avatar?: Maybe<Scalars['String']>
-}
+  username?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+  bio?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
+};
 
 export type Query = {
-  __typename?: 'Query'
-  postsByTitle?: Maybe<Array<Post>>
-  post?: Maybe<Post>
-  users: Array<User>
-  user?: Maybe<User>
-  me?: Maybe<User>
-}
+  __typename?: 'Query';
+  post?: Maybe<Post>;
+  lasted?: Maybe<Array<Post>>;
+  recommend?: Maybe<Array<Post>>;
+  postsByTitle?: Maybe<Array<Post>>;
+  postsById?: Maybe<Post>;
+  users: Array<User>;
+  user?: Maybe<User>;
+  me?: Maybe<User>;
+};
 
-export type QueryPostsByTitleArgs = {
-  title: Scalars['String']
-}
 
 export type QueryPostArgs = {
-  id: Scalars['Int']
-}
+  id: Scalars['Int'];
+};
+
+
+export type QueryPostsByTitleArgs = {
+  title: Scalars['String'];
+};
+
+
+export type QueryPostsByIdArgs = {
+  id: Scalars['String'];
+};
+
 
 export type QueryUserArgs = {
-  username?: Maybe<Scalars['String']>
-  email?: Maybe<Scalars['String']>
-}
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+};
 
 export type Mutation = {
-  __typename?: 'Mutation'
-  createCategory: Category
-  editCategory: Scalars['Boolean']
-  addPostCategory: Scalars['Boolean']
-  delPostCategory: Scalars['Boolean']
-  posts: Array<Post>
-  createPost: Post
-  updatePost: Scalars['Boolean']
-  delectPost: Scalars['Boolean']
-  createTag: Tag
-  editTag: Scalars['Boolean']
-  addPostTag: Scalars['Boolean']
-  delPostTag: Scalars['Boolean']
-  register: RegisterResonse
-  login: UserResponse
-  logout: Scalars['Boolean']
-  createVideo: Video
-  editVideo: Scalars['Boolean']
-  delVideo: Scalars['Boolean']
-  addPostVideo: Scalars['Boolean']
-}
+  __typename?: 'Mutation';
+  createCategory: Category;
+  editCategory: Scalars['Boolean'];
+  addPostCategory: Scalars['Boolean'];
+  delPostCategory: Scalars['Boolean'];
+  posts: Array<Post>;
+  createPost: Post;
+  updatePost: Scalars['Boolean'];
+  delectPost: Scalars['Boolean'];
+  createTag: Tag;
+  editTag: Scalars['Boolean'];
+  addPostTag: Scalars['Boolean'];
+  delPostTag: Scalars['Boolean'];
+  register: RegisterResonse;
+  login: UserResponse;
+  logout: Scalars['Boolean'];
+  createVideo: Video;
+  editVideo: Scalars['Boolean'];
+  delVideo: Scalars['Boolean'];
+  addPostVideo: Scalars['Boolean'];
+};
+
 
 export type MutationCreateCategoryArgs = {
-  options: CreateCategoryArgs
-}
+  options: CreateCategoryArgs;
+};
+
 
 export type MutationEditCategoryArgs = {
-  options: EditCategoryArgs
-}
+  options: EditCategoryArgs;
+};
+
 
 export type MutationAddPostCategoryArgs = {
-  options: DelCategoryArgs
-}
+  options: DelCategoryArgs;
+};
+
 
 export type MutationPostsArgs = {
-  options: QueryPostsArgs
-}
+  options: QueryPostsArgs;
+};
+
 
 export type MutationCreatePostArgs = {
-  options: CreatePostArgs
-}
+  options: CreatePostArgs;
+};
+
 
 export type MutationUpdatePostArgs = {
-  options: UpdatePostArgs
-}
+  options: UpdatePostArgs;
+};
+
 
 export type MutationDelectPostArgs = {
-  id: Scalars['Int']
-}
+  id: Scalars['Int'];
+};
+
 
 export type MutationCreateTagArgs = {
-  options: CreateTagArgs
-}
+  options: CreateTagArgs;
+};
+
 
 export type MutationEditTagArgs = {
-  options: EditTagArgs
-}
+  options: EditTagArgs;
+};
+
 
 export type MutationAddPostTagArgs = {
-  options: DelTagArgs
-}
+  options: DelTagArgs;
+};
+
 
 export type MutationRegisterArgs = {
-  params: UserRegisterInput
-}
+  params: UserRegisterInput;
+};
+
 
 export type MutationLoginArgs = {
-  password: Scalars['String']
-  email: Scalars['String']
-}
+  password: Scalars['String'];
+  email: Scalars['String'];
+};
+
 
 export type MutationCreateVideoArgs = {
-  options: CreateVideoArgs
-}
+  options: CreateVideoArgs;
+};
+
 
 export type MutationEditVideoArgs = {
-  options: EditVideoArgs
-}
+  options: EditVideoArgs;
+};
+
 
 export type MutationAddPostVideoArgs = {
-  options: CreateVideoArgs
-}
+  options: CreateVideoArgs;
+};
 
-export type RegularUserFragment = { __typename?: 'User' } & Pick<
-  User,
-  'id' | 'username'
->
+export type RegularPostFragment = (
+  { __typename?: 'Post' }
+  & Pick<Post, 'title' | 'id' | 'type' | 'cover' | 'createdAt' | 'content'>
+  & { categories?: Maybe<Array<(
+    { __typename?: 'Category' }
+    & Pick<Category, 'name' | 'id'>
+  )>>, tags?: Maybe<Array<(
+    { __typename?: 'Tag' }
+    & Pick<Tag, 'id' | 'name'>
+  )>>, videos?: Maybe<Array<(
+    { __typename?: 'Video' }
+    & Pick<Video, 'episode' | 'id' | 'title' | 'playUrl'>
+  )>> }
+);
+
+export type RegularUserFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username'>
+);
 
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String']
-  password: Scalars['String']
-}>
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
 
-export type LoginMutation = { __typename?: 'Mutation' } & {
-  login: { __typename?: 'UserResponse' } & Pick<UserResponse, 'error'> & {
-      user?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>
-    }
-}
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'UserResponse' }
+    & Pick<UserResponse, 'error'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    )> }
+  ) }
+);
 
 export type PostsMutationVariables = Exact<{
-  id?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['Int']>
-  creatorId?: Maybe<Scalars['String']>
-  categoriesId?: Maybe<Array<Scalars['String']>>
-  tagsId?: Maybe<Array<Scalars['String']>>
-  offset?: Maybe<Scalars['Int']>
-  limit?: Maybe<Scalars['Int']>
-}>
+  id?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['Int']>;
+  creatorId?: Maybe<Scalars['String']>;
+  categoriesId?: Maybe<Array<Scalars['String']>>;
+  tagsId?: Maybe<Array<Scalars['String']>>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+}>;
 
-export type PostsMutation = { __typename?: 'Mutation' } & {
-  posts: Array<
-    { __typename?: 'Post' } & Pick<Post, 'title' | 'id' | 'type'> & {
-        categories?: Maybe<
-          Array<{ __typename?: 'Category' } & Pick<Category, 'name' | 'id'>>
-        >
-        tags?: Maybe<Array<{ __typename?: 'Tag' } & Pick<Tag, 'id' | 'name'>>>
-        videos?: Maybe<
-          Array<
-            { __typename?: 'Video' } & Pick<
-              Video,
-              'episode' | 'id' | 'title' | 'playUrl'
-            >
-          >
-        >
-      }
-  >
-}
+
+export type PostsMutation = (
+  { __typename?: 'Mutation' }
+  & { posts: Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'title' | 'id' | 'type' | 'cover' | 'createdAt'>
+    & { categories?: Maybe<Array<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'name' | 'id'>
+    )>>, tags?: Maybe<Array<(
+      { __typename?: 'Tag' }
+      & Pick<Tag, 'id' | 'name'>
+    )>>, videos?: Maybe<Array<(
+      { __typename?: 'Video' }
+      & Pick<Video, 'episode' | 'id' | 'title' | 'playUrl'>
+    )>> }
+  )> }
+);
 
 export type RegisterMutationVariables = Exact<{
-  email: Scalars['String']
-  username?: Maybe<Scalars['String']>
-  password: Scalars['String']
-  bio?: Maybe<Scalars['String']>
-  avatar?: Maybe<Scalars['String']>
-}>
+  email: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
+  password: Scalars['String'];
+  bio?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
+}>;
 
-export type RegisterMutation = { __typename?: 'Mutation' } & {
-  register: { __typename?: 'RegisterResonse' } & {
-    errors?: Maybe<
-      Array<
-        { __typename?: 'FieldError' } & Pick<FieldError, 'field' | 'message'>
-      >
-    >
-    user?: Maybe<{ __typename?: 'User' } & Pick<User, 'username'>>
-  }
-}
 
-export type MeQueryVariables = Exact<{ [key: string]: never }>
+export type RegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'RegisterResonse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) }
+);
 
-export type MeQuery = { __typename?: 'Query' } & {
-  me?: Maybe<{ __typename?: 'User' } & RegularUserFragment>
-}
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
-export const RegularUserFragmentDoc = gql`
-  fragment RegularUser on User {
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & RegularUserFragment
+  )> }
+);
+
+export type PostbyidQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type PostbyidQuery = (
+  { __typename?: 'Query' }
+  & { postsById?: Maybe<(
+    { __typename?: 'Post' }
+    & RegularPostFragment
+  )> }
+);
+
+export type LastedPostQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LastedPostQuery = (
+  { __typename?: 'Query' }
+  & { lasted?: Maybe<Array<(
+    { __typename?: 'Post' }
+    & RegularPostFragment
+  )>> }
+);
+
+export type PostsbytitleQueryVariables = Exact<{
+  title: Scalars['String'];
+}>;
+
+
+export type PostsbytitleQuery = (
+  { __typename?: 'Query' }
+  & { postsByTitle?: Maybe<Array<(
+    { __typename?: 'Post' }
+    & RegularPostFragment
+  )>> }
+);
+
+export const RegularPostFragmentDoc = gql`
+    fragment RegularPost on Post {
+  title
+  id
+  type
+  cover
+  createdAt
+  content
+  categories {
+    name
     id
-    username
   }
-`
-export const LoginDocument = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      user {
-        id
-      }
-      error
-    }
+  tags {
+    id
+    name
   }
-`
-export type LoginMutationFn = Apollo.MutationFunction<
-  LoginMutation,
-  LoginMutationVariables
->
-export type LoginProps<
-  TChildProps = {},
-  TDataName extends string = 'mutate'
-> = {
-  [key in TDataName]: Apollo.MutationFunction<
-    LoginMutation,
-    LoginMutationVariables
-  >
-} &
-  TChildProps
-export function withLogin<
-  TProps,
-  TChildProps = {},
-  TDataName extends string = 'mutate'
->(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    LoginMutation,
-    LoginMutationVariables,
-    LoginProps<TChildProps, TDataName>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    LoginMutation,
-    LoginMutationVariables,
-    LoginProps<TChildProps, TDataName>
-  >(LoginDocument, {
-    alias: 'login',
-    ...operationOptions,
-  })
+  videos {
+    episode
+    id
+    title
+    playUrl
+  }
 }
+    `;
+export const RegularUserFragmentDoc = gql`
+    fragment RegularUser on User {
+  id
+  username
+}
+    `;
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    user {
+      id
+    }
+    error
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
  * __useLoginMutation__
@@ -492,103 +571,40 @@ export function withLogin<
  *   },
  * });
  */
-export function useLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LoginMutation,
-    LoginMutationVariables
-  >
-) {
-  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument,
-    baseOptions
-  )
-}
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
-export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
-export type LoginMutationOptions = Apollo.BaseMutationOptions<
-  LoginMutation,
-  LoginMutationVariables
->
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const PostsDocument = gql`
-  mutation Posts(
-    $id: String
-    $type: Int
-    $creatorId: String
-    $categoriesId: [String!]
-    $tagsId: [String!]
-    $offset: Int
-    $limit: Int
+    mutation Posts($id: String, $type: Int, $creatorId: String, $categoriesId: [String!], $tagsId: [String!], $offset: Int, $limit: Int) {
+  posts(
+    options: {id: $id, type: $type, creatorId: $creatorId, categoriesId: $categoriesId, tagsId: $tagsId, offset: $offset, limit: $limit}
   ) {
-    posts(
-      options: {
-        id: $id
-        type: $type
-        creatorId: $creatorId
-        categoriesId: $categoriesId
-        tagsId: $tagsId
-        offset: $offset
-        limit: $limit
-      }
-    ) {
-      title
+    title
+    id
+    type
+    cover
+    createdAt
+    categories {
+      name
       id
-      type
-      cover
-      createdAt
-
-      categories {
-        name
-        id
-      }
-      tags {
-        id
-        name
-      }
-      videos {
-        episode
-        id
-        title
-        playUrl
-      }
+    }
+    tags {
+      id
+      name
+    }
+    videos {
+      episode
+      id
+      title
+      playUrl
     }
   }
-`
-export type PostsMutationFn = Apollo.MutationFunction<
-  PostsMutation,
-  PostsMutationVariables
->
-export type PostsProps<
-  TChildProps = {},
-  TDataName extends string = 'mutate'
-> = {
-  [key in TDataName]: Apollo.MutationFunction<
-    PostsMutation,
-    PostsMutationVariables
-  >
-} &
-  TChildProps
-export function withPosts<
-  TProps,
-  TChildProps = {},
-  TDataName extends string = 'mutate'
->(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    PostsMutation,
-    PostsMutationVariables,
-    PostsProps<TChildProps, TDataName>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    PostsMutation,
-    PostsMutationVariables,
-    PostsProps<TChildProps, TDataName>
-  >(PostsDocument, {
-    alias: 'posts',
-    ...operationOptions,
-  })
 }
+    `;
+export type PostsMutationFn = Apollo.MutationFunction<PostsMutation, PostsMutationVariables>;
 
 /**
  * __usePostsMutation__
@@ -613,86 +629,28 @@ export function withPosts<
  *   },
  * });
  */
-export function usePostsMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    PostsMutation,
-    PostsMutationVariables
-  >
-) {
-  return Apollo.useMutation<PostsMutation, PostsMutationVariables>(
-    PostsDocument,
-    baseOptions
-  )
-}
-export type PostsMutationHookResult = ReturnType<typeof usePostsMutation>
-export type PostsMutationResult = Apollo.MutationResult<PostsMutation>
-export type PostsMutationOptions = Apollo.BaseMutationOptions<
-  PostsMutation,
-  PostsMutationVariables
->
+export function usePostsMutation(baseOptions?: Apollo.MutationHookOptions<PostsMutation, PostsMutationVariables>) {
+        return Apollo.useMutation<PostsMutation, PostsMutationVariables>(PostsDocument, baseOptions);
+      }
+export type PostsMutationHookResult = ReturnType<typeof usePostsMutation>;
+export type PostsMutationResult = Apollo.MutationResult<PostsMutation>;
+export type PostsMutationOptions = Apollo.BaseMutationOptions<PostsMutation, PostsMutationVariables>;
 export const RegisterDocument = gql`
-  mutation Register(
-    $email: String!
-    $username: String
-    $password: String!
-    $bio: String
-    $avatar: String
+    mutation Register($email: String!, $username: String, $password: String!, $bio: String, $avatar: String) {
+  register(
+    params: {email: $email, username: $username, password: $password, bio: $bio, avatar: $avatar}
   ) {
-    register(
-      params: {
-        email: $email
-        username: $username
-        password: $password
-        bio: $bio
-        avatar: $avatar
-      }
-    ) {
-      errors {
-        field
-        message
-      }
-      user {
-        username
-      }
+    errors {
+      field
+      message
+    }
+    user {
+      username
     }
   }
-`
-export type RegisterMutationFn = Apollo.MutationFunction<
-  RegisterMutation,
-  RegisterMutationVariables
->
-export type RegisterProps<
-  TChildProps = {},
-  TDataName extends string = 'mutate'
-> = {
-  [key in TDataName]: Apollo.MutationFunction<
-    RegisterMutation,
-    RegisterMutationVariables
-  >
-} &
-  TChildProps
-export function withRegister<
-  TProps,
-  TChildProps = {},
-  TDataName extends string = 'mutate'
->(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    RegisterMutation,
-    RegisterMutationVariables,
-    RegisterProps<TChildProps, TDataName>
-  >
-) {
-  return ApolloReactHoc.withMutation<
-    TProps,
-    RegisterMutation,
-    RegisterMutationVariables,
-    RegisterProps<TChildProps, TDataName>
-  >(RegisterDocument, {
-    alias: 'register',
-    ...operationOptions,
-  })
 }
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -715,57 +673,19 @@ export function withRegister<
  *   },
  * });
  */
-export function useRegisterMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RegisterMutation,
-    RegisterMutationVariables
-  >
-) {
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
-    RegisterDocument,
-    baseOptions
-  )
-}
-export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>
-export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<
-  RegisterMutation,
-  RegisterMutationVariables
->
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const MeDocument = gql`
-  query Me {
-    me {
-      ...RegularUser
-    }
+    query Me {
+  me {
+    ...RegularUser
   }
-  ${RegularUserFragmentDoc}
-`
-export type MeProps<TChildProps = {}, TDataName extends string = 'data'> = {
-  [key in TDataName]: ApolloReactHoc.DataValue<MeQuery, MeQueryVariables>
-} &
-  TChildProps
-export function withMe<
-  TProps,
-  TChildProps = {},
-  TDataName extends string = 'data'
->(
-  operationOptions?: ApolloReactHoc.OperationOption<
-    TProps,
-    MeQuery,
-    MeQueryVariables,
-    MeProps<TChildProps, TDataName>
-  >
-) {
-  return ApolloReactHoc.withQuery<
-    TProps,
-    MeQuery,
-    MeQueryVariables,
-    MeProps<TChildProps, TDataName>
-  >(MeDocument, {
-    alias: 'me',
-    ...operationOptions,
-  })
 }
+    ${RegularUserFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -782,16 +702,110 @@ export function withMe<
  *   },
  * });
  */
-export function useMeQuery(
-  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
-) {
-  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions)
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const PostbyidDocument = gql`
+    query postbyid($id: String!) {
+  postsById(id: $id) {
+    ...RegularPost
+  }
 }
-export function useMeLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
-) {
-  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions)
+    ${RegularPostFragmentDoc}`;
+
+/**
+ * __usePostbyidQuery__
+ *
+ * To run a query within a React component, call `usePostbyidQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostbyidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostbyidQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePostbyidQuery(baseOptions: Apollo.QueryHookOptions<PostbyidQuery, PostbyidQueryVariables>) {
+        return Apollo.useQuery<PostbyidQuery, PostbyidQueryVariables>(PostbyidDocument, baseOptions);
+      }
+export function usePostbyidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostbyidQuery, PostbyidQueryVariables>) {
+          return Apollo.useLazyQuery<PostbyidQuery, PostbyidQueryVariables>(PostbyidDocument, baseOptions);
+        }
+export type PostbyidQueryHookResult = ReturnType<typeof usePostbyidQuery>;
+export type PostbyidLazyQueryHookResult = ReturnType<typeof usePostbyidLazyQuery>;
+export type PostbyidQueryResult = Apollo.QueryResult<PostbyidQuery, PostbyidQueryVariables>;
+export const LastedPostDocument = gql`
+    query LastedPost {
+  lasted {
+    ...RegularPost
+  }
 }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>
+    ${RegularPostFragmentDoc}`;
+
+/**
+ * __useLastedPostQuery__
+ *
+ * To run a query within a React component, call `useLastedPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLastedPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLastedPostQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLastedPostQuery(baseOptions?: Apollo.QueryHookOptions<LastedPostQuery, LastedPostQueryVariables>) {
+        return Apollo.useQuery<LastedPostQuery, LastedPostQueryVariables>(LastedPostDocument, baseOptions);
+      }
+export function useLastedPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LastedPostQuery, LastedPostQueryVariables>) {
+          return Apollo.useLazyQuery<LastedPostQuery, LastedPostQueryVariables>(LastedPostDocument, baseOptions);
+        }
+export type LastedPostQueryHookResult = ReturnType<typeof useLastedPostQuery>;
+export type LastedPostLazyQueryHookResult = ReturnType<typeof useLastedPostLazyQuery>;
+export type LastedPostQueryResult = Apollo.QueryResult<LastedPostQuery, LastedPostQueryVariables>;
+export const PostsbytitleDocument = gql`
+    query postsbytitle($title: String!) {
+  postsByTitle(title: $title) {
+    ...RegularPost
+  }
+}
+    ${RegularPostFragmentDoc}`;
+
+/**
+ * __usePostsbytitleQuery__
+ *
+ * To run a query within a React component, call `usePostsbytitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsbytitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsbytitleQuery({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function usePostsbytitleQuery(baseOptions: Apollo.QueryHookOptions<PostsbytitleQuery, PostsbytitleQueryVariables>) {
+        return Apollo.useQuery<PostsbytitleQuery, PostsbytitleQueryVariables>(PostsbytitleDocument, baseOptions);
+      }
+export function usePostsbytitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsbytitleQuery, PostsbytitleQueryVariables>) {
+          return Apollo.useLazyQuery<PostsbytitleQuery, PostsbytitleQueryVariables>(PostsbytitleDocument, baseOptions);
+        }
+export type PostsbytitleQueryHookResult = ReturnType<typeof usePostsbytitleQuery>;
+export type PostsbytitleLazyQueryHookResult = ReturnType<typeof usePostsbytitleLazyQuery>;
+export type PostsbytitleQueryResult = Apollo.QueryResult<PostsbytitleQuery, PostsbytitleQueryVariables>;

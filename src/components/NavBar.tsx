@@ -9,11 +9,19 @@ import {
   InputRightElement,
   Link,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import theme from '../theme'
 import NextLink from 'next/link'
+import { useMeQuery } from '../generated/graphql'
+import { useRouter } from 'next/router'
 
 const NavBar = () => {
+  const { data } = useMeQuery()
+  const [searchInput, setSearchInput] = useState('')
+  const router = useRouter()
+
+  // console.log(router)
+
   return (
     <Box
       px="5vw"
@@ -42,8 +50,15 @@ const NavBar = () => {
               type="text"
               fontSize="18px"
               placeholder="search everything..."
+              onChange={(e) => setSearchInput(e.target.value)}
             />
-            <InputRightElement width="4.5rem" overflow="hidden">
+            <InputRightElement
+              width="4.5rem"
+              overflow="hidden"
+              onClick={() => {
+                router.push(`/post/search/?t=${searchInput}`)
+              }}
+            >
               <IconButton
                 borderRadius="20px"
                 backgroundColor="transparent"
@@ -54,7 +69,7 @@ const NavBar = () => {
           </InputGroup>
         </Flex>
         <Box className="">
-          <Avatar name="Lin" />
+          <Avatar name="-" />
         </Box>
       </Flex>
     </Box>

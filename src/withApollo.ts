@@ -5,7 +5,7 @@ import { withApollo } from 'next-apollo'
 const apolloClient = (ctx?: NextPageContext) =>
   new ApolloClient({
     uri: process.env.NEXT_PUBLIC_API_URL as string,
-    credentials: 'include',
+    credentials: 'include' /* 'same-origin'*/,
     headers: {
       cookie:
         (typeof window === 'undefined'

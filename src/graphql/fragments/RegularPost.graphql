@@ -1,0 +1,25 @@
+fragment RegularPost on Post {
+  title
+  id
+  type
+  cover
+  createdAt
+  content
+
+  categories {
+    name
+    id
+  }
+
+  tags {
+    id
+    name
+  }
+
+  videos {
+    episode
+    id
+    title
+    playUrl
+  }
+}

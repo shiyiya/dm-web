@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "gen": "graphql-codegen --config codegen.yml"
   },
@@ -23,9 +23,11 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-id-swiper": "^4.0.0",
+    "react-player": "^2.7.2",
     "react-swipeable-views": "^0.13.9",
     "swiper": "^6.4.5",
-    "typeorm": "^0.2.29"
+    "typeorm": "^0.2.29",
+    "video-react": "^0.14.1"
   },
   "license": "MIT",
   "devDependencies": {
