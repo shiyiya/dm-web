@@ -1,0 +1,253 @@
+# Exposes a URL that specifies the behaviour of this scalar.
+directive @specifiedBy(
+  # The URL that specifies the behaviour of this scalar.
+  url: String!
+) on SCALAR
+type _BaseEntity {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+}
+
+type Appraisal {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+  content: String!
+  rate: Float!
+  bindPostId: String!
+  bindPost: Post!
+  creatorId: String!
+  creator: User!
+}
+
+type Category {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+  name: String!
+  description: String
+}
+
+input CreateCategoryArgs {
+  name: String!
+  description: String
+}
+
+input CreatePostArgs {
+  title: String!
+  subtitle: String
+  cover: String
+  type: Int = 0
+  categoriesId: [String!]
+  tagsId: [String!]
+  creatorId: String!
+  videos: [CreateVideoArgsWithPost!] = []
+}
+
+input CreateTagArgs {
+  name: String!
+  description: String
+}
+
+input CreateVideoArgs {
+  title: String!
+  playUrl: String!
+  episode: Float!
+  subtitle: String
+  cover: String
+  bindPostId: String
+}
+
+input CreateVideoArgsWithPost {
+  title: String!
+  playUrl: String!
+  episode: Float!
+  subtitle: String
+  cover: String
+  bindPostId: String
+}
+
+# The javascript `Date` as string. Type represents date and time as the ISO Date string.
+scalar DateTime
+
+input DelCategoryArgs {
+  categoryId: String!
+  postId: String!
+}
+
+input DelTagArgs {
+  tagId: String!
+  postId: String!
+}
+
+input EditCategoryArgs {
+  name: String!
+  description: String
+  id: String!
+}
+
+input EditTagArgs {
+  name: String!
+  description: String
+  id: String!
+}
+
+input EditVideoArgs {
+  title: String!
+  playUrl: String!
+  episode: Float!
+  subtitle: String
+  cover: String
+  id: String!
+}
+
+type FieldError {
+  field: String!
+  message: String!
+}
+
+type Mutation {
+  createCategory(options: CreateCategoryArgs!): Category!
+  editCategory(options: EditCategoryArgs!): Boolean!
+  addPostCategory(options: DelCategoryArgs!): Boolean!
+  delPostCategory: Boolean!
+  posts(options: QueryPostsArgs!): [Post!]!
+  createPost(options: CreatePostArgs!): Post!
+  updatePost(options: UpdatePostArgs!): Boolean!
+  delectPost(id: Int!): Boolean!
+  createTag(options: CreateTagArgs!): Tag!
+  editTag(options: EditTagArgs!): Boolean!
+  addPostTag(options: DelTagArgs!): Boolean!
+  delPostTag: Boolean!
+  register(params: UserRegisterInput!): RegisterResonse!
+  login(password: String!, email: String!): UserResponse!
+  logout: Boolean!
+  createVideo(options: CreateVideoArgs!): Video!
+  editVideo(options: EditVideoArgs!): Boolean!
+  delVideo: Boolean!
+  addPostVideo(options: CreateVideoArgs!): Boolean!
+}
+
+input OptionalPostField {
+  title: String!
+  subtitle: String
+  cover: String
+  type: Int = 0
+  categoriesId: [String!]
+  tagsId: [String!]
+}
+
+input OptionalVideoField {
+  title: String!
+  playUrl: String!
+  episode: Float!
+  subtitle: String
+  cover: String
+}
+
+type Post {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+  title: String!
+  subtitle: String
+  content: String
+  cover: String!
+  type: Int!
+  creator: User!
+  videos: [Video!]
+  appraisals: [Appraisal!]
+  categories: [Category!]
+  tags: [Tag!]
+}
+
+type Query {
+  postsByTitle(title: String!): [Post!]
+  post(id: Int!): Post
+  users: [User!]!
+  user(username: String, email: String): User
+  me: User
+}
+
+input QueryPostsArgs {
+  id: String
+  title: String = ""
+  type: Int = -1
+  creatorId: String
+  categoriesId: [String!]
+  tagsId: [String!]
+  offset: Int = 0
+  limit: Int = 15
+}
+
+type RegisterResonse {
+  errors: [FieldError!]
+  user: User
+}
+
+type Tag {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+  name: String!
+  description: String
+}
+
+input UpdatePostArgs {
+  title: String!
+  subtitle: String
+  cover: String
+  type: Int = 0
+  categoriesId: [String!]
+  tagsId: [String!]
+  id: String!
+}
+
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+  roleLevel: Int!
+  resetPWDToken: String
+  username: String
+  email: String!
+  password: String!
+  avatar: String
+  bio: String
+  posts: [Post!]
+  appraisals: [Appraisal!]
+}
+
+input UserRegisterInput {
+  username: String
+  email: String!
+  password: String!
+  bio: String
+  avatar: String
+}
+
+type UserResponse {
+  error: String
+  user: User
+}
+
+type Video {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  status: Float!
+  title: String!
+  playUrl: String!
+  episode: Int!
+  subtitle: String
+  cover: String
+  bindPost: Post!
+}
+

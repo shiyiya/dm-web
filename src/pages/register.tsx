@@ -7,21 +7,24 @@ import {
   Box,
   Heading,
   useToast,
-  ListItem,
-  UnorderedList,
 } from '@chakra-ui/react'
 import { Formik, Form, Field } from 'formik'
 import React from 'react'
 import Wrapper from '../components/Wrapper'
-import { useRegisterMutation } from '../generated/graphql'
+import {
+  MeQuery,
+  MeQueryResult,
+  useRegisterMutation,
+} from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
 import { useRouter } from 'next/router'
 import NavBar from '../components/NavBar'
 import theme from '../theme'
 import { AtSignIcon } from '@chakra-ui/icons'
+import withApollo from '../withApollo'
 
 const Register: React.FC<{}> = () => {
-  const [, register] = useRegisterMutation()
+  const [register] = useRegisterMutation()
   const router = useRouter()
   const toast = useToast()
 
@@ -29,43 +32,31 @@ const Register: React.FC<{}> = () => {
     <>
       <NavBar />
       <Wrapper>
-        <Box w={theme.breakpoints.sm} margin="auto">
+        <Box w={theme.breakpoints.sm} margin="auto" pb={20}>
           <Heading my="20" as="h1" textAlign="center">
             Register <AtSignIcon /> Login
           </Heading>
 
           <Formik
-            initialValues={{ username: '', password: '' }}
+            initialValues={{ email: '', password: '' }}
             onSubmit={(values, { setErrors, setSubmitting }) => {
-              register(values).then(({ data }) => {
+              register({
+                variables: values,
+                update: (store, { data }) => {
+                  // store.writeQuery<MeQueryResult>({
+                  //   query: CurrentUserDocument,
+                  //   data: {
+                  //     currentUser: data?.register.user
+                  //   },
+                  // })
+                },
+              }).then(({ data }: any) => {
                 setSubmitting(false)
-                if (values.username.length < 0 || values.username.length > 8) {
+
+                if (values.email.length < 0 || values.email.length > 8) {
                   toast({
                     position: 'top',
                     title: 'username max length 8',
-                    status: 'error',
-                    duration: 3000,
-                  })
-                  return
-                }
-                if (
-                  !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&.])[A-Za-z\d$@$!%*?&.]{6, 20}/.test(
-                    values.password
-                  )
-                ) {
-                  toast({
-                    position: 'top',
-                    render: () => (
-                      <Box color="red" p={3} bg="red.500">
-                        <UnorderedList>
-                          <ListItem>最少6个字符</ListItem>
-                          <ListItem>至少有1个大写字符</ListItem>
-                          <ListItem>至少1个小写字符</ListItem>
-                          <ListItem>至少1个小写字符</ListItem>
-                        </UnorderedList>
-                      </Box>
-                    ),
-
                     status: 'error',
                     duration: 3000,
                   })
@@ -81,23 +72,21 @@ const Register: React.FC<{}> = () => {
           >
             {({ isSubmitting }) => (
               <Form>
-                <Field name="username">
+                <Field name="email">
                   {({ field, form }: any) => (
                     <FormControl
                       isRequired
-                      isInvalid={form.errors.username && form.touched.username}
+                      isInvalid={form.errors.email && form.touched.email}
                     >
-                      <FormLabel htmlFor="username">Username</FormLabel>
+                      <FormLabel htmlFor="email">Username</FormLabel>
                       <Input
                         {...field}
-                        id="username"
-                        placeholder="username"
+                        id="email"
+                        placeholder="email"
                         minLength={1}
                         maxLength={8}
                       />
-                      <FormErrorMessage>
-                        {form.errors.username}
-                      </FormErrorMessage>
+                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -108,7 +97,7 @@ const Register: React.FC<{}> = () => {
                   {({ field, form }: any) => (
                     <FormControl
                       isRequired
-                      isInvalid={form.errors.username && form.touched.username}
+                      isInvalid={form.errors.email && form.touched.email}
                     >
                       <FormLabel htmlFor="password">Password</FormLabel>
                       <Input
@@ -125,7 +114,7 @@ const Register: React.FC<{}> = () => {
                   )}
                 </Field>
 
-                <Box textAlign="right" mt={4}>
+                <Box textAlign="right" mt={10}>
                   <Button
                     mr={4}
                     isLoading={isSubmitting}
@@ -148,4 +137,4 @@ const Register: React.FC<{}> = () => {
   )
 }
 
-export default Register
+export default withApollo(Register)

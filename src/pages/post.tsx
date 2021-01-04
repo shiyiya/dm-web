@@ -4,8 +4,9 @@ import NavBar from '../components/NavBar'
 import { css } from '@emotion/react'
 import VideoCardList from '../components/VideoCard'
 import { StarIcon } from '@chakra-ui/icons'
+import withApollo from '../withApollo'
 
-const Show: React.FC<{}> = () => (
+const Post: React.FC<{}> = () => (
   <>
     <NavBar />
     {/* info */}
@@ -170,4 +171,4 @@ const Show: React.FC<{}> = () => (
   </>
 )
 
-export default Show
+export default withApollo(Post)

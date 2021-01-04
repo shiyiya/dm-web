@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import theme from '../theme'
+import NextLink from 'next/link'
 
 const NavBar = () => {
   return (
@@ -29,9 +30,9 @@ const NavBar = () => {
         margin="auto"
       >
         <Flex alignItems="center" h="100%">
-          <Link>
+          <NextLink href="/">
             <StarIcon mr="48px" boxSize={8} />
-          </Link>
+          </NextLink>
 
           <InputGroup size="sm">
             <Input

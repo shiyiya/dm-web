@@ -1,11 +1,13 @@
 mutation Register(
-  $username: String!
+  $email: String!
+  $username: String
   $password: String!
   $bio: String
   $avatar: String
 ) {
   register(
     params: {
+      email: $email
       username: $username
       password: $password
       bio: $bio
