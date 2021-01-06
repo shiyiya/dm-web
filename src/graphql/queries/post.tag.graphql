@@ -1,0 +1,7 @@
+query postsByTag($tagId: String!) {
+  postsByTag(tagId: $tagId) {
+    posts {
+      ...RegularPost
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Box, Heading, Tag, Wrap, Link, LinkBox } from '@chakra-ui/react'
+import { Box, Heading, Tag, Wrap, LinkBox, Center } from '@chakra-ui/react'
 import React from 'react'
 import theme from '../theme'
 import { css } from '@emotion/react'
@@ -14,7 +14,7 @@ const cardCss = css`
   }
 `
 
-const VideoCard = ({ title, cover, createdAt, id }: any) => {
+const VideoCard = ({ title, cover, createdAt, id, videos }: any) => {
   return (
     <NextLink href={`/post/${id}`}>
       <LinkBox href={`/post/${id}`}>
@@ -58,7 +58,7 @@ const VideoCard = ({ title, cover, createdAt, id }: any) => {
               {title}
             </Heading>
             <Tag mr={2}>{new Date(createdAt).getFullYear()}</Tag>
-            <Tag mr={2}>19集 </Tag>
+            <Tag mr={2}>{videos?.length || 0} 集 </Tag>
           </Box>
           <Box className="card-reveal"></Box>
         </Box>
@@ -68,15 +68,19 @@ const VideoCard = ({ title, cover, createdAt, id }: any) => {
 }
 
 const VideoCardList = ({ title, data }: any) => {
-  // const videos = useTagsPostApi(['21'])
-  // const { data } = useLastedPostQuery()
-
   return (
     <Box w="90vw" m="auto" py="20px">
       <NavTitle>{title}</NavTitle>
-      <Wrap>
-        {data && data.map((_: any, k: any) => <VideoCard {..._} key={k} />)}
-      </Wrap>
+
+      {data?.length ? (
+        <Wrap>
+          {data && data.map((_: any, k: any) => <VideoCard {..._} key={k} />)}
+        </Wrap>
+      ) : (
+        <Center bg={theme.colors.cardBg} h="100px" color="white">
+          empty
+        </Center>
+      )}
     </Box>
   )
 }

@@ -4,6 +4,8 @@ import SwipeableViews from 'react-swipeable-views'
 import { css, jsx } from '@emotion/react'
 import theme from '../theme'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
+import { usePostsByTagQuery } from '../generated/graphql'
+import Link from 'next/link'
 
 export const SlideContainer: React.FC = (props) => (
   <Box
@@ -46,46 +48,63 @@ const titleBgShadow = css`
   color: #fff;
 `
 
-const GDSwiper: React.FC = () => (
-  <SlideContainer>
-    <SwipeableViews enableMouseEvents animateTransitions autoPlay>
-      <div
-        style={{
-          backgroundImage: "url('https://seaside.ebb.io/98x1465.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          height: ' calc((9 / 16) * 100vw)',
-          maxHeight: 'calc(100vh - 140px)',
-        }}
-      >
-        <Box pos="absolute" left="5vw" bottom="140px">
-          <Heading as="h2" css={titleBgShadow}>
-            請問您今天要來點兔子嗎？ 第三季
-          </Heading>
+const GDSwiper: React.FC = () => {
+  const { data } = usePostsByTagQuery({ variables: { tagId: '1' } })
 
-          <Button
-            _hover={{
-              bg: theme.colors.accent,
-              color: '#fff',
-              boxShadow: `0 0 15px 0 ${theme.colors.accent}`,
+  console.log(data?.postsByTag?.posts)
+
+  if (!data?.postsByTag?.posts?.length) return null
+
+  return (
+    <SlideContainer>
+      <SwipeableViews
+        enableMouseEvents
+        animateTransitions
+        autoPlay
+        hysteresis={2}
+      >
+        {data?.postsByTag?.posts?.map((_, k) => (
+          <div
+            style={{
+              backgroundImage: `url('${_.cover}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              position: 'relative',
+              zIndex: 1,
+              width: '100%',
+              height: ' calc((9 / 16) * 100vw)',
+              maxHeight: 'calc(100vh - 140px)',
             }}
-            bg="#fff"
-            colorScheme="#fff"
-            mt={10}
-            rightIcon={<ArrowForwardIcon />}
-            size="lg"
-            borderRadius={60}
           >
-            Start Watching Now
-          </Button>
-        </Box>
-      </div>
-    </SwipeableViews>
-  </SlideContainer>
-)
+            <Box pos="absolute" left="5vw" bottom="140px">
+              <Heading as="h2" css={titleBgShadow}>
+                {_.title}
+              </Heading>
+
+              <Link href={`/post/${_.id}`}>
+                <Button
+                  _hover={{
+                    bg: theme.colors.accent,
+                    color: '#fff',
+                    boxShadow: `0 0 15px 0 ${theme.colors.accent}`,
+                  }}
+                  bg="#fff"
+                  colorScheme="#fff"
+                  mt={10}
+                  rightIcon={<ArrowForwardIcon />}
+                  size="lg"
+                  borderRadius={60}
+                >
+                  Start Watching Now
+                </Button>
+              </Link>
+            </Box>
+          </div>
+        ))}
+      </SwipeableViews>
+    </SlideContainer>
+  )
+}
 
 export default GDSwiper

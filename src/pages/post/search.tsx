@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import NavBar from '../../components/NavBar'
 import VideoCardList from '../../components/VideoCard'
-import { usePostbyidQuery, usePostsbytitleQuery } from '../../generated/graphql'
+import { usePostsbytitleQuery } from '../../generated/graphql'
 import withApollo from '../../withApollo'
 
 const Index = () => {

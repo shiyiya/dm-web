@@ -32,6 +32,7 @@ export type Category = {
   status: Scalars['Int'];
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  posts?: Maybe<Array<Post>>;
 };
 
 export type Tag = {
@@ -42,6 +43,7 @@ export type Tag = {
   status: Scalars['Int'];
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
+  posts?: Maybe<Array<Post>>;
 };
 
 export type User = {
@@ -201,8 +203,6 @@ export type UpdatePostArgs = {
   subtitle?: Maybe<Scalars['String']>;
   cover?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['Int']>;
-  categoriesId?: Maybe<Array<Scalars['String']>>;
-  tagsId?: Maybe<Array<Scalars['String']>>;
   id: Scalars['String'];
 };
 
@@ -243,19 +243,20 @@ export type UserRegisterInput = {
 
 export type Query = {
   __typename?: 'Query';
-  post?: Maybe<Post>;
   lasted?: Maybe<Array<Post>>;
   recommend?: Maybe<Array<Post>>;
-  postsByTitle?: Maybe<Array<Post>>;
   postsById?: Maybe<Post>;
+  postsByTitle?: Maybe<Array<Post>>;
+  postsByCa?: Maybe<Category>;
+  postsByTag?: Maybe<Tag>;
   users: Array<User>;
   user?: Maybe<User>;
   me?: Maybe<User>;
 };
 
 
-export type QueryPostArgs = {
-  id: Scalars['Int'];
+export type QueryPostsByIdArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -264,8 +265,13 @@ export type QueryPostsByTitleArgs = {
 };
 
 
-export type QueryPostsByIdArgs = {
-  id: Scalars['String'];
+export type QueryPostsByCaArgs = {
+  caId: Scalars['String'];
+};
+
+
+export type QueryPostsByTagArgs = {
+  tagId: Scalars['String'];
 };
 
 
@@ -384,7 +390,7 @@ export type RegularPostFragment = (
     & Pick<Tag, 'id' | 'name'>
   )>>, videos?: Maybe<Array<(
     { __typename?: 'Video' }
-    & Pick<Video, 'episode' | 'id' | 'title' | 'playUrl'>
+    & Pick<Video, 'episode' | 'id' | 'title' | 'playUrl' | 'cover'>
   )>> }
 );
 
@@ -498,6 +504,22 @@ export type LastedPostQuery = (
   )>> }
 );
 
+export type PostsByTagQueryVariables = Exact<{
+  tagId: Scalars['String'];
+}>;
+
+
+export type PostsByTagQuery = (
+  { __typename?: 'Query' }
+  & { postsByTag?: Maybe<(
+    { __typename?: 'Tag' }
+    & { posts?: Maybe<Array<(
+      { __typename?: 'Post' }
+      & RegularPostFragment
+    )>> }
+  )> }
+);
+
 export type PostsbytitleQueryVariables = Exact<{
   title: Scalars['String'];
 }>;
@@ -532,6 +554,7 @@ export const RegularPostFragmentDoc = gql`
     id
     title
     playUrl
+    cover
   }
 }
     `;
@@ -776,6 +799,41 @@ export function useLastedPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type LastedPostQueryHookResult = ReturnType<typeof useLastedPostQuery>;
 export type LastedPostLazyQueryHookResult = ReturnType<typeof useLastedPostLazyQuery>;
 export type LastedPostQueryResult = Apollo.QueryResult<LastedPostQuery, LastedPostQueryVariables>;
+export const PostsByTagDocument = gql`
+    query postsByTag($tagId: String!) {
+  postsByTag(tagId: $tagId) {
+    posts {
+      ...RegularPost
+    }
+  }
+}
+    ${RegularPostFragmentDoc}`;
+
+/**
+ * __usePostsByTagQuery__
+ *
+ * To run a query within a React component, call `usePostsByTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsByTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsByTagQuery({
+ *   variables: {
+ *      tagId: // value for 'tagId'
+ *   },
+ * });
+ */
+export function usePostsByTagQuery(baseOptions: Apollo.QueryHookOptions<PostsByTagQuery, PostsByTagQueryVariables>) {
+        return Apollo.useQuery<PostsByTagQuery, PostsByTagQueryVariables>(PostsByTagDocument, baseOptions);
+      }
+export function usePostsByTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsByTagQuery, PostsByTagQueryVariables>) {
+          return Apollo.useLazyQuery<PostsByTagQuery, PostsByTagQueryVariables>(PostsByTagDocument, baseOptions);
+        }
+export type PostsByTagQueryHookResult = ReturnType<typeof usePostsByTagQuery>;
+export type PostsByTagLazyQueryHookResult = ReturnType<typeof usePostsByTagLazyQuery>;
+export type PostsByTagQueryResult = Apollo.QueryResult<PostsByTagQuery, PostsByTagQueryVariables>;
 export const PostsbytitleDocument = gql`
     query postsbytitle($title: String!) {
   postsByTitle(title: $title) {

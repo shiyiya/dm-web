@@ -1,25 +1,25 @@
-import React from 'react'
-import { Box, Heading, Tag } from '@chakra-ui/react'
+import React, { DOMElement, useRef, useState } from 'react'
+import { Badge, Box, Heading, LinkBox, Tag, Text } from '@chakra-ui/react'
 import NavBar from '../../components/NavBar'
 import { css } from '@emotion/react'
-import VideoCardList from '../../components/VideoCard'
 import { StarIcon } from '@chakra-ui/icons'
 import withApollo from '../../withApollo'
 import { useRouter } from 'next/router'
 import { usePostbyidQuery } from '../../generated/graphql'
 import NextLink from 'next/link'
-import Link from 'next/link'
+import TouchScrollRow from '../../components/TouchScrollRow'
+import theme from '../../theme'
+import marked from 'marked'
 
 const Post: React.FC<{}> = () => {
   const id = useRouter().query.postId as string
-
   const { data } = usePostbyidQuery({ variables: { id: id } })
   const post = data?.postsById
+  console.log(post)
 
   return (
     <>
       <NavBar />
-      {/* info */}
       <Box overflow="hidden">
         <Box
           css={css`
@@ -77,7 +77,8 @@ const Post: React.FC<{}> = () => {
             >
               <Box
                 css={css`
-                  background: url(${post?.cover}) center no-repeat;
+                  background: url(${post?.cover}) center no-repeat
+                    ${theme.colors.cardBg};
                   box-shadow: 11px -12px 37px 0 rgba(0, 0, 0, 0.3);
                   background-size: cover;
 
@@ -111,15 +112,19 @@ const Post: React.FC<{}> = () => {
                 <Heading as="h1" size="xl" mb={4}>
                   {post?.title}
                 </Heading>
-                <Box>
-                  <StarIcon /> <StarIcon /> <StarIcon />
+
+                <Box my={4}>
+                  <Badge size={'sm'} mr={2}>
+                    {post?.createdAt}
+                  </Badge>
                 </Box>
 
-                <Tag mr={2}>2020</Tag>
                 <Tag> Japanese</Tag>
-                <Heading as="h4" size="sm" mt={4}>
-                  {post?.content}
-                </Heading>
+
+                <Box my={4}>
+                  <StarIcon /> <StarIcon /> <StarIcon />
+                  <StarIcon /> <StarIcon />
+                </Box>
               </Box>
 
               {/* info summary */}
@@ -153,27 +158,74 @@ const Post: React.FC<{}> = () => {
                   }
                 `}
               >
-                <Heading as="h4" size="md" mb={4}>
-                  Act! Addict! Actors!
-                </Heading>
-                <Heading as="p" size="45em" mb={4} opacity={0.7}>
-                  {post?.content}
-                </Heading>
+                {/* <Heading as="h4" size="md" mb={4}>
+                </Heading> */}
+
+                <Box
+                  dangerouslySetInnerHTML={{
+                    __html: marked(
+                      post?.content?.replace(/\!\[suo\]\(.*\)/, '') || ''
+                    ),
+                  }}
+                />
               </Box>
             </Box>
           </Box>
         </Box>
 
-        <Box margin="auto" w="90vw" my={10}>
-          {post?.videos?.map((_, k) => (
-            <NextLink href={`/play/${post.id}?url=${_.playUrl}`} key={_.id}>
-              <Link href={`/play/${post.id}?url=${_.playUrl}`}>
-                <Tag mr={2} my={2}>
-                  {k + 1} {_.title}
-                </Tag>
-              </Link>
-            </NextLink>
-          ))}
+        <Box
+          style={{ margin: '20px auto', padding: '20px 0 35px', width: '90vw' }}
+        >
+          <TouchScrollRow>
+            {post?.videos?.map((_, k) => (
+              <Box
+                css={css`
+                  width: 20%;
+                  min-width: 200px;
+                `}
+                key={k}
+              >
+                <NextLink href={`/play/${post.id}?url=${_.playUrl}`}>
+                  <a
+                    href={`/play/${post.id}?url=${_.playUrl}`}
+                    draggable={false}
+                  >
+                    <Box>
+                      <Box
+                        css={css`
+                          margin: 0 5px 0px;
+                          box-shadow: 0 0 rgba(0, 0, 0, 0.2);
+                          border-radius: 5px;
+                          position: relative;
+                          transition: all 0.15s ease-out;
+                          background-image: url(${_.cover || post.cover});
+                          background-repeat: no-repeat;
+                          background-size: 100.1%;
+                          background-position: 50% 50%;
+                          position: relative;
+                          border-radius: 5px;
+                          overflow: hidden;
+                          background-color: rgba(0, 0, 0, 0.4);
+                          transition: all 0.15s ease-out;
+
+                          &::before {
+                            display: block;
+                            content: '';
+                            width: 100%;
+                            padding-top: 56%;
+                          }
+                        `}
+                      ></Box>
+
+                      <Text mr={4} my={4}>
+                        {k + 1} {_.title}
+                      </Text>
+                    </Box>
+                  </a>
+                </NextLink>
+              </Box>
+            ))}
+          </TouchScrollRow>
         </Box>
 
         {/* recommend */}

@@ -1,45 +1,55 @@
-import { SearchIcon, StarIcon } from '@chakra-ui/icons'
+import { AtSignIcon, SearchIcon, StarIcon } from '@chakra-ui/icons'
 import {
   Avatar,
+  AvatarBadge,
   Box,
+  Button,
   Flex,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
   Link,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import theme from '../theme'
 import NextLink from 'next/link'
-import { useMeQuery } from '../generated/graphql'
 import { useRouter } from 'next/router'
 
 const NavBar = () => {
-  const { data } = useMeQuery()
   const [searchInput, setSearchInput] = useState('')
   const router = useRouter()
 
-  // console.log(router)
-
   return (
     <Box
-      px="5vw"
-      py="10px"
       h="72px"
       bgColor={theme.colors.black}
       bg={theme.colors.accent}
+      style={{
+        // ${theme.colors.accent} 0.5透明
+        boxShadow: `0 5px 15px 4px #27396780`,
+        position: 'relative',
+        zIndex: 999,
+      }}
     >
       <Flex
         justifyContent="space-between"
         alignItems="center"
         h="100%"
-        maxW={theme.breakpoints.xl}
+        maxW="90vw"
         margin="auto"
       >
         <Flex alignItems="center" h="100%">
           <NextLink href="/">
-            <StarIcon mr="48px" boxSize={8} />
+            <Link href="/">
+              <Avatar name="LOGO" mr={6} />
+            </Link>
           </NextLink>
 
           <InputGroup size="sm">
@@ -51,12 +61,17 @@ const NavBar = () => {
               fontSize="18px"
               placeholder="search everything..."
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.keyCode == 13) {
+                  router.replace(`/post/search/?t=${searchInput}`)
+                }
+              }}
             />
             <InputRightElement
               width="4.5rem"
               overflow="hidden"
               onClick={() => {
-                router.push(`/post/search/?t=${searchInput}`)
+                router.replace(`/post/search/?t=${searchInput}`)
               }}
             >
               <IconButton
@@ -68,9 +83,22 @@ const NavBar = () => {
             </InputRightElement>
           </InputGroup>
         </Flex>
-        <Box className="">
-          <Avatar name="-" />
-        </Box>
+        <Menu>
+          <MenuButton as={Button} colorScheme="pink">
+            <Avatar boxSize={8} />
+          </MenuButton>
+          <MenuList>
+            <MenuGroup title="Profile">
+              <MenuItem>My Account</MenuItem>
+              <MenuItem>Payments </MenuItem>
+            </MenuGroup>
+            <MenuDivider />
+            <MenuGroup title="Help">
+              <MenuItem>Docs</MenuItem>
+              <MenuItem>FAQ</MenuItem>
+            </MenuGroup>
+          </MenuList>
+        </Menu>
       </Flex>
     </Box>
   )
