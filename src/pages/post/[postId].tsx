@@ -1,11 +1,11 @@
-import React, { DOMElement, useRef, useState } from 'react'
+import React from 'react'
 import { Badge, Box, Heading, LinkBox, Tag, Text } from '@chakra-ui/react'
 import NavBar from '../../components/NavBar'
 import { css } from '@emotion/react'
 import { StarIcon } from '@chakra-ui/icons'
 import withApollo from '../../withApollo'
 import { useRouter } from 'next/router'
-import { usePostbyidQuery } from '../../generated/graphql'
+import { useQueryPostByIdQuery } from '../../generated/graphql'
 import NextLink from 'next/link'
 import TouchScrollRow from '../../components/TouchScrollRow'
 import theme from '../../theme'
@@ -13,9 +13,8 @@ import marked from 'marked'
 
 const Post: React.FC<{}> = () => {
   const id = useRouter().query.postId as string
-  const { data } = usePostbyidQuery({ variables: { id: id } })
-  const post = data?.postsById
-  console.log(post)
+  const { data } = useQueryPostByIdQuery({ variables: { id: id } })
+  const post = data?.queryPostById
 
   return (
     <>

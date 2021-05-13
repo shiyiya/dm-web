@@ -1,5 +1,5 @@
-query postsbytitle($title: String!) {
-  postsByTitle(title: $title) {
+query queryPostsByTitle($title: String!) {
+  queryPostsByTitle(title: $title) {
     ...RegularPost
   }
 }

@@ -1,5 +1,5 @@
-query LastedPost {
-  lasted {
+query queryLastedPosts {
+  queryLastedPosts {
     ...RegularPost
   }
 }

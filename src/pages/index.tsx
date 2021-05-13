@@ -1,21 +1,19 @@
-import { Box } from '@chakra-ui/react'
 import React from 'react'
-import Loading from '../components/Loading'
 import NavBar from '../components/NavBar'
 import GDSwiper from '../components/Swiper'
 import VideoCardList from '../components/VideoCard'
-import { useLastedPostQuery, usePostsByTagQuery } from '../generated/graphql'
+import { useQueryLastedPostsQuery } from '../generated/graphql'
 import withApollo from '../withApollo'
 
 const Index = () => {
-  const { data } = useLastedPostQuery()
+  const { data } = useQueryLastedPostsQuery()
 
   return (
     <>
       <NavBar />
       <GDSwiper />
 
-      <VideoCardList data={data?.lasted} title="最近更新" />
+      <VideoCardList data={data?.queryLastedPosts} title="最近更新" />
 
       {/* <Box
         h="300px"

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import NavBar from '../../components/NavBar'
 import VideoCardList from '../../components/VideoCard'
-import { usePostsbytitleQuery } from '../../generated/graphql'
+import { useQueryPostsByTitleQuery } from '../../generated/graphql'
 import withApollo from '../../withApollo'
 
 const Index = () => {
@@ -11,14 +11,14 @@ const Index = () => {
 
   console.log(useRouter().query)
 
-  const { data } = usePostsbytitleQuery({ variables: { title: t } })
+  const { data } = useQueryPostsByTitleQuery({ variables: { title: t } })
 
   console.log(data)
 
   return (
     <>
       <NavBar />
-      <VideoCardList title="search result" data={data?.postsByTitle} />
+      <VideoCardList title="search result" data={data?.queryPostsByTitle} />
     </>
   )
 }

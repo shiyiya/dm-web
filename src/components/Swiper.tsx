@@ -4,7 +4,7 @@ import SwipeableViews from 'react-swipeable-views'
 import { css, jsx } from '@emotion/react'
 import theme from '../theme'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
-import { usePostsByTagQuery } from '../generated/graphql'
+import { useQueryPostsByTagQuery } from '../generated/graphql'
 import Link from 'next/link'
 
 export const SlideContainer: React.FC = (props) => (
@@ -49,11 +49,11 @@ const titleBgShadow = css`
 `
 
 const GDSwiper: React.FC = () => {
-  const { data } = usePostsByTagQuery({ variables: { tagId: '1' } })
+  const { data } = useQueryPostsByTagQuery({ variables: { tagId: '1' } })
 
-  console.log(data?.postsByTag?.posts)
+  console.log(data?.queryPostsByTag?.posts)
 
-  if (!data?.postsByTag?.posts?.length) return null
+  if (!data?.queryPostsByTag?.posts?.length) return null
 
   return (
     <SlideContainer>
@@ -63,7 +63,7 @@ const GDSwiper: React.FC = () => {
         autoPlay
         hysteresis={2}
       >
-        {data?.postsByTag?.posts?.map((_, k) => (
+        {data?.queryPostsByTag?.posts?.map((_, k) => (
           <div
             style={{
               backgroundImage: `url('${_.cover}')`,

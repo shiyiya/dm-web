@@ -1,5 +1,5 @@
-query postbyid($id: String!) {
-  postsById(id: $id) {
+query queryPostById($id: String!) {
+  queryPostById(id: $id) {
     ...RegularPost
   }
 }

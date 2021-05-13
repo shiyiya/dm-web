@@ -46,23 +46,6 @@ export type Tag = {
   posts?: Maybe<Array<Post>>;
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  status: Scalars['Int'];
-  roleLevel: Scalars['Int'];
-  resetPWDToken?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-  password: Scalars['String'];
-  avatar?: Maybe<Scalars['String']>;
-  bio?: Maybe<Scalars['String']>;
-  posts?: Maybe<Array<Post>>;
-  appraisals?: Maybe<Array<Appraisal>>;
-};
-
 export type Video = {
   __typename?: 'Video';
   id: Scalars['ID'];
@@ -103,10 +86,26 @@ export type Appraisal = {
   status: Scalars['Int'];
   content: Scalars['String'];
   rate: Scalars['Int'];
-  bindPostId: Scalars['String'];
   bindPost: Post;
-  creatorId: Scalars['String'];
   creator: User;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  status: Scalars['Int'];
+  roleLevel: Scalars['Int'];
+  resetPWDToken?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
+  bio?: Maybe<Scalars['String']>;
+  posts?: Maybe<Array<Post>>;
+  appraisals?: Maybe<Array<Appraisal>>;
 };
 
 export type UserResponse = {
@@ -185,6 +184,7 @@ export type OptionalPostField = {
   type?: Maybe<Scalars['Int']>;
   categoriesId?: Maybe<Array<Scalars['String']>>;
   tagsId?: Maybe<Array<Scalars['String']>>;
+  content?: Maybe<Scalars['String']>;
 };
 
 export type CreatePostArgs = {
@@ -194,13 +194,14 @@ export type CreatePostArgs = {
   type?: Maybe<Scalars['Int']>;
   categoriesId?: Maybe<Array<Scalars['String']>>;
   tagsId?: Maybe<Array<Scalars['String']>>;
-  creatorId: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
   videos?: Maybe<Array<CreateVideoArgsWithPost>>;
 };
 
 export type UpdatePostArgs = {
   title: Scalars['String'];
   subtitle?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['String']>;
   cover?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['Int']>;
   id: Scalars['String'];
@@ -233,51 +234,82 @@ export type DelTagArgs = {
   postId: Scalars['String'];
 };
 
-export type UserRegisterInput = {
-  username?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-  password: Scalars['String'];
-  bio?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
-};
-
 export type Query = {
   __typename?: 'Query';
-  lasted?: Maybe<Array<Post>>;
-  recommend?: Maybe<Array<Post>>;
-  postsById?: Maybe<Post>;
-  postsByTitle?: Maybe<Array<Post>>;
-  postsByCa?: Maybe<Category>;
-  postsByTag?: Maybe<Tag>;
-  users: Array<User>;
-  user?: Maybe<User>;
+  queryCategorys: Array<Category>;
+  queryLastedPosts?: Maybe<Array<Post>>;
+  queryRecommendPost?: Maybe<Array<Post>>;
+  queryPostById?: Maybe<Post>;
+  queryPostsByTitle?: Maybe<Array<Post>>;
+  queryPostsByCa?: Maybe<Category>;
+  queryPostsByTag?: Maybe<Tag>;
+  queryTags: Array<Tag>;
+  createTag: Tag;
+  queryUsers: Array<User>;
+  queryUser?: Maybe<User>;
+  queryUsersByIds?: Maybe<Array<User>>;
   me?: Maybe<User>;
+  queryVideos: Array<Video>;
 };
 
 
-export type QueryPostsByIdArgs = {
+export type QueryQueryCategorysArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryQueryPostByIdArgs = {
   id: Scalars['String'];
 };
 
 
-export type QueryPostsByTitleArgs = {
+export type QueryQueryPostsByTitleArgs = {
   title: Scalars['String'];
 };
 
 
-export type QueryPostsByCaArgs = {
+export type QueryQueryPostsByCaArgs = {
   caId: Scalars['String'];
 };
 
 
-export type QueryPostsByTagArgs = {
+export type QueryQueryPostsByTagArgs = {
   tagId: Scalars['String'];
 };
 
 
-export type QueryUserArgs = {
+export type QueryQueryTagsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryCreateTagArgs = {
+  options: CreateTagArgs;
+};
+
+
+export type QueryQueryUsersArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryQueryUserArgs = {
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryQueryUsersByIdsArgs = {
+  ids?: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type QueryQueryVideosArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 export type Mutation = {
@@ -286,11 +318,10 @@ export type Mutation = {
   editCategory: Scalars['Boolean'];
   addPostCategory: Scalars['Boolean'];
   delPostCategory: Scalars['Boolean'];
-  posts: Array<Post>;
+  queryPosts: Array<Post>;
   createPost: Post;
-  updatePost: Scalars['Boolean'];
-  delectPost: Scalars['Boolean'];
-  createTag: Tag;
+  updatePost: Post;
+  delPostById: Scalars['Boolean'];
   editTag: Scalars['Boolean'];
   addPostTag: Scalars['Boolean'];
   delPostTag: Scalars['Boolean'];
@@ -319,7 +350,7 @@ export type MutationAddPostCategoryArgs = {
 };
 
 
-export type MutationPostsArgs = {
+export type MutationQueryPostsArgs = {
   options: QueryPostsArgs;
 };
 
@@ -334,13 +365,8 @@ export type MutationUpdatePostArgs = {
 };
 
 
-export type MutationDelectPostArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationCreateTagArgs = {
-  options: CreateTagArgs;
+export type MutationDelPostByIdArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -355,7 +381,8 @@ export type MutationAddPostTagArgs = {
 
 
 export type MutationRegisterArgs = {
-  params: UserRegisterInput;
+  password: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -417,41 +444,9 @@ export type LoginMutation = (
   ) }
 );
 
-export type PostsMutationVariables = Exact<{
-  id?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['Int']>;
-  creatorId?: Maybe<Scalars['String']>;
-  categoriesId?: Maybe<Array<Scalars['String']>>;
-  tagsId?: Maybe<Array<Scalars['String']>>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type PostsMutation = (
-  { __typename?: 'Mutation' }
-  & { posts: Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'title' | 'id' | 'type' | 'cover' | 'createdAt'>
-    & { categories?: Maybe<Array<(
-      { __typename?: 'Category' }
-      & Pick<Category, 'name' | 'id'>
-    )>>, tags?: Maybe<Array<(
-      { __typename?: 'Tag' }
-      & Pick<Tag, 'id' | 'name'>
-    )>>, videos?: Maybe<Array<(
-      { __typename?: 'Video' }
-      & Pick<Video, 'episode' | 'id' | 'title' | 'playUrl'>
-    )>> }
-  )> }
-);
-
 export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
-  username?: Maybe<Scalars['String']>;
   password: Scalars['String'];
-  bio?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -480,38 +475,38 @@ export type MeQuery = (
   )> }
 );
 
-export type PostbyidQueryVariables = Exact<{
+export type QueryPostByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type PostbyidQuery = (
+export type QueryPostByIdQuery = (
   { __typename?: 'Query' }
-  & { postsById?: Maybe<(
+  & { queryPostById?: Maybe<(
     { __typename?: 'Post' }
     & RegularPostFragment
   )> }
 );
 
-export type LastedPostQueryVariables = Exact<{ [key: string]: never; }>;
+export type QueryLastedPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LastedPostQuery = (
+export type QueryLastedPostsQuery = (
   { __typename?: 'Query' }
-  & { lasted?: Maybe<Array<(
+  & { queryLastedPosts?: Maybe<Array<(
     { __typename?: 'Post' }
     & RegularPostFragment
   )>> }
 );
 
-export type PostsByTagQueryVariables = Exact<{
+export type QueryPostsByTagQueryVariables = Exact<{
   tagId: Scalars['String'];
 }>;
 
 
-export type PostsByTagQuery = (
+export type QueryPostsByTagQuery = (
   { __typename?: 'Query' }
-  & { postsByTag?: Maybe<(
+  & { queryPostsByTag?: Maybe<(
     { __typename?: 'Tag' }
     & { posts?: Maybe<Array<(
       { __typename?: 'Post' }
@@ -520,14 +515,14 @@ export type PostsByTagQuery = (
   )> }
 );
 
-export type PostsbytitleQueryVariables = Exact<{
+export type QueryPostsByTitleQueryVariables = Exact<{
   title: Scalars['String'];
 }>;
 
 
-export type PostsbytitleQuery = (
+export type QueryPostsByTitleQuery = (
   { __typename?: 'Query' }
-  & { postsByTitle?: Maybe<Array<(
+  & { queryPostsByTitle?: Maybe<Array<(
     { __typename?: 'Post' }
     & RegularPostFragment
   )>> }
@@ -600,69 +595,9 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
-export const PostsDocument = gql`
-    mutation Posts($id: String, $type: Int, $creatorId: String, $categoriesId: [String!], $tagsId: [String!], $offset: Int, $limit: Int) {
-  posts(
-    options: {id: $id, type: $type, creatorId: $creatorId, categoriesId: $categoriesId, tagsId: $tagsId, offset: $offset, limit: $limit}
-  ) {
-    title
-    id
-    type
-    cover
-    createdAt
-    categories {
-      name
-      id
-    }
-    tags {
-      id
-      name
-    }
-    videos {
-      episode
-      id
-      title
-      playUrl
-    }
-  }
-}
-    `;
-export type PostsMutationFn = Apollo.MutationFunction<PostsMutation, PostsMutationVariables>;
-
-/**
- * __usePostsMutation__
- *
- * To run a mutation, you first call `usePostsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `usePostsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [postsMutation, { data, loading, error }] = usePostsMutation({
- *   variables: {
- *      id: // value for 'id'
- *      type: // value for 'type'
- *      creatorId: // value for 'creatorId'
- *      categoriesId: // value for 'categoriesId'
- *      tagsId: // value for 'tagsId'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function usePostsMutation(baseOptions?: Apollo.MutationHookOptions<PostsMutation, PostsMutationVariables>) {
-        return Apollo.useMutation<PostsMutation, PostsMutationVariables>(PostsDocument, baseOptions);
-      }
-export type PostsMutationHookResult = ReturnType<typeof usePostsMutation>;
-export type PostsMutationResult = Apollo.MutationResult<PostsMutation>;
-export type PostsMutationOptions = Apollo.BaseMutationOptions<PostsMutation, PostsMutationVariables>;
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $username: String, $password: String!, $bio: String, $avatar: String) {
-  register(
-    params: {email: $email, username: $username, password: $password, bio: $bio, avatar: $avatar}
-  ) {
+    mutation Register($email: String!, $password: String!) {
+  register(email: $email, password: $password) {
     errors {
       field
       message
@@ -689,10 +624,7 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * const [registerMutation, { data, loading, error }] = useRegisterMutation({
  *   variables: {
  *      email: // value for 'email'
- *      username: // value for 'username'
  *      password: // value for 'password'
- *      bio: // value for 'bio'
- *      avatar: // value for 'avatar'
  *   },
  * });
  */
@@ -734,74 +666,74 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const PostbyidDocument = gql`
-    query postbyid($id: String!) {
-  postsById(id: $id) {
+export const QueryPostByIdDocument = gql`
+    query queryPostById($id: String!) {
+  queryPostById(id: $id) {
     ...RegularPost
   }
 }
     ${RegularPostFragmentDoc}`;
 
 /**
- * __usePostbyidQuery__
+ * __useQueryPostByIdQuery__
  *
- * To run a query within a React component, call `usePostbyidQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostbyidQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useQueryPostByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryPostByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePostbyidQuery({
+ * const { data, loading, error } = useQueryPostByIdQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function usePostbyidQuery(baseOptions: Apollo.QueryHookOptions<PostbyidQuery, PostbyidQueryVariables>) {
-        return Apollo.useQuery<PostbyidQuery, PostbyidQueryVariables>(PostbyidDocument, baseOptions);
+export function useQueryPostByIdQuery(baseOptions: Apollo.QueryHookOptions<QueryPostByIdQuery, QueryPostByIdQueryVariables>) {
+        return Apollo.useQuery<QueryPostByIdQuery, QueryPostByIdQueryVariables>(QueryPostByIdDocument, baseOptions);
       }
-export function usePostbyidLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostbyidQuery, PostbyidQueryVariables>) {
-          return Apollo.useLazyQuery<PostbyidQuery, PostbyidQueryVariables>(PostbyidDocument, baseOptions);
+export function useQueryPostByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryPostByIdQuery, QueryPostByIdQueryVariables>) {
+          return Apollo.useLazyQuery<QueryPostByIdQuery, QueryPostByIdQueryVariables>(QueryPostByIdDocument, baseOptions);
         }
-export type PostbyidQueryHookResult = ReturnType<typeof usePostbyidQuery>;
-export type PostbyidLazyQueryHookResult = ReturnType<typeof usePostbyidLazyQuery>;
-export type PostbyidQueryResult = Apollo.QueryResult<PostbyidQuery, PostbyidQueryVariables>;
-export const LastedPostDocument = gql`
-    query LastedPost {
-  lasted {
+export type QueryPostByIdQueryHookResult = ReturnType<typeof useQueryPostByIdQuery>;
+export type QueryPostByIdLazyQueryHookResult = ReturnType<typeof useQueryPostByIdLazyQuery>;
+export type QueryPostByIdQueryResult = Apollo.QueryResult<QueryPostByIdQuery, QueryPostByIdQueryVariables>;
+export const QueryLastedPostsDocument = gql`
+    query queryLastedPosts {
+  queryLastedPosts {
     ...RegularPost
   }
 }
     ${RegularPostFragmentDoc}`;
 
 /**
- * __useLastedPostQuery__
+ * __useQueryLastedPostsQuery__
  *
- * To run a query within a React component, call `useLastedPostQuery` and pass it any options that fit your needs.
- * When your component renders, `useLastedPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useQueryLastedPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryLastedPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useLastedPostQuery({
+ * const { data, loading, error } = useQueryLastedPostsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useLastedPostQuery(baseOptions?: Apollo.QueryHookOptions<LastedPostQuery, LastedPostQueryVariables>) {
-        return Apollo.useQuery<LastedPostQuery, LastedPostQueryVariables>(LastedPostDocument, baseOptions);
+export function useQueryLastedPostsQuery(baseOptions?: Apollo.QueryHookOptions<QueryLastedPostsQuery, QueryLastedPostsQueryVariables>) {
+        return Apollo.useQuery<QueryLastedPostsQuery, QueryLastedPostsQueryVariables>(QueryLastedPostsDocument, baseOptions);
       }
-export function useLastedPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LastedPostQuery, LastedPostQueryVariables>) {
-          return Apollo.useLazyQuery<LastedPostQuery, LastedPostQueryVariables>(LastedPostDocument, baseOptions);
+export function useQueryLastedPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryLastedPostsQuery, QueryLastedPostsQueryVariables>) {
+          return Apollo.useLazyQuery<QueryLastedPostsQuery, QueryLastedPostsQueryVariables>(QueryLastedPostsDocument, baseOptions);
         }
-export type LastedPostQueryHookResult = ReturnType<typeof useLastedPostQuery>;
-export type LastedPostLazyQueryHookResult = ReturnType<typeof useLastedPostLazyQuery>;
-export type LastedPostQueryResult = Apollo.QueryResult<LastedPostQuery, LastedPostQueryVariables>;
-export const PostsByTagDocument = gql`
-    query postsByTag($tagId: String!) {
-  postsByTag(tagId: $tagId) {
+export type QueryLastedPostsQueryHookResult = ReturnType<typeof useQueryLastedPostsQuery>;
+export type QueryLastedPostsLazyQueryHookResult = ReturnType<typeof useQueryLastedPostsLazyQuery>;
+export type QueryLastedPostsQueryResult = Apollo.QueryResult<QueryLastedPostsQuery, QueryLastedPostsQueryVariables>;
+export const QueryPostsByTagDocument = gql`
+    query queryPostsByTag($tagId: String!) {
+  queryPostsByTag(tagId: $tagId) {
     posts {
       ...RegularPost
     }
@@ -810,60 +742,60 @@ export const PostsByTagDocument = gql`
     ${RegularPostFragmentDoc}`;
 
 /**
- * __usePostsByTagQuery__
+ * __useQueryPostsByTagQuery__
  *
- * To run a query within a React component, call `usePostsByTagQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostsByTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useQueryPostsByTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryPostsByTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePostsByTagQuery({
+ * const { data, loading, error } = useQueryPostsByTagQuery({
  *   variables: {
  *      tagId: // value for 'tagId'
  *   },
  * });
  */
-export function usePostsByTagQuery(baseOptions: Apollo.QueryHookOptions<PostsByTagQuery, PostsByTagQueryVariables>) {
-        return Apollo.useQuery<PostsByTagQuery, PostsByTagQueryVariables>(PostsByTagDocument, baseOptions);
+export function useQueryPostsByTagQuery(baseOptions: Apollo.QueryHookOptions<QueryPostsByTagQuery, QueryPostsByTagQueryVariables>) {
+        return Apollo.useQuery<QueryPostsByTagQuery, QueryPostsByTagQueryVariables>(QueryPostsByTagDocument, baseOptions);
       }
-export function usePostsByTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsByTagQuery, PostsByTagQueryVariables>) {
-          return Apollo.useLazyQuery<PostsByTagQuery, PostsByTagQueryVariables>(PostsByTagDocument, baseOptions);
+export function useQueryPostsByTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryPostsByTagQuery, QueryPostsByTagQueryVariables>) {
+          return Apollo.useLazyQuery<QueryPostsByTagQuery, QueryPostsByTagQueryVariables>(QueryPostsByTagDocument, baseOptions);
         }
-export type PostsByTagQueryHookResult = ReturnType<typeof usePostsByTagQuery>;
-export type PostsByTagLazyQueryHookResult = ReturnType<typeof usePostsByTagLazyQuery>;
-export type PostsByTagQueryResult = Apollo.QueryResult<PostsByTagQuery, PostsByTagQueryVariables>;
-export const PostsbytitleDocument = gql`
-    query postsbytitle($title: String!) {
-  postsByTitle(title: $title) {
+export type QueryPostsByTagQueryHookResult = ReturnType<typeof useQueryPostsByTagQuery>;
+export type QueryPostsByTagLazyQueryHookResult = ReturnType<typeof useQueryPostsByTagLazyQuery>;
+export type QueryPostsByTagQueryResult = Apollo.QueryResult<QueryPostsByTagQuery, QueryPostsByTagQueryVariables>;
+export const QueryPostsByTitleDocument = gql`
+    query queryPostsByTitle($title: String!) {
+  queryPostsByTitle(title: $title) {
     ...RegularPost
   }
 }
     ${RegularPostFragmentDoc}`;
 
 /**
- * __usePostsbytitleQuery__
+ * __useQueryPostsByTitleQuery__
  *
- * To run a query within a React component, call `usePostsbytitleQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostsbytitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useQueryPostsByTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryPostsByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePostsbytitleQuery({
+ * const { data, loading, error } = useQueryPostsByTitleQuery({
  *   variables: {
  *      title: // value for 'title'
  *   },
  * });
  */
-export function usePostsbytitleQuery(baseOptions: Apollo.QueryHookOptions<PostsbytitleQuery, PostsbytitleQueryVariables>) {
-        return Apollo.useQuery<PostsbytitleQuery, PostsbytitleQueryVariables>(PostsbytitleDocument, baseOptions);
+export function useQueryPostsByTitleQuery(baseOptions: Apollo.QueryHookOptions<QueryPostsByTitleQuery, QueryPostsByTitleQueryVariables>) {
+        return Apollo.useQuery<QueryPostsByTitleQuery, QueryPostsByTitleQueryVariables>(QueryPostsByTitleDocument, baseOptions);
       }
-export function usePostsbytitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsbytitleQuery, PostsbytitleQueryVariables>) {
-          return Apollo.useLazyQuery<PostsbytitleQuery, PostsbytitleQueryVariables>(PostsbytitleDocument, baseOptions);
+export function useQueryPostsByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryPostsByTitleQuery, QueryPostsByTitleQueryVariables>) {
+          return Apollo.useLazyQuery<QueryPostsByTitleQuery, QueryPostsByTitleQueryVariables>(QueryPostsByTitleDocument, baseOptions);
         }
-export type PostsbytitleQueryHookResult = ReturnType<typeof usePostsbytitleQuery>;
-export type PostsbytitleLazyQueryHookResult = ReturnType<typeof usePostsbytitleLazyQuery>;
-export type PostsbytitleQueryResult = Apollo.QueryResult<PostsbytitleQuery, PostsbytitleQueryVariables>;
+export type QueryPostsByTitleQueryHookResult = ReturnType<typeof useQueryPostsByTitleQuery>;
+export type QueryPostsByTitleLazyQueryHookResult = ReturnType<typeof useQueryPostsByTitleLazyQuery>;
+export type QueryPostsByTitleQueryResult = Apollo.QueryResult<QueryPostsByTitleQuery, QueryPostsByTitleQueryVariables>;

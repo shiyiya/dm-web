@@ -1,5 +1,5 @@
-query postsByTag($tagId: String!) {
-  postsByTag(tagId: $tagId) {
+query queryPostsByTag($tagId: String!) {
+  queryPostsByTag(tagId: $tagId) {
     posts {
       ...RegularPost
     }

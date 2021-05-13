@@ -7,11 +7,17 @@ const TouchScrollRow: React.FC = ({ children }) => {
   const [isT, setT] = useState(false)
   const [dis, setDis] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
+  const dfn = () => {
+    if (isT) setT(false)
+  }
 
   useEffect(() => {
-    document.addEventListener('mouseup', () => {
-      if (isT) setT(false)
-    })
+    document.addEventListener('mouseup', dfn)
+    document.addEventListener('touchend', dfn)
+    return () => {
+      document.removeEventListener('mouseup', dfn)
+      document.removeEventListener('touchend', dfn)
+    }
   })
 
   return (

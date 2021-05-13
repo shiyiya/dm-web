@@ -1,19 +1,5 @@
-mutation Register(
-  $email: String!
-  $username: String
-  $password: String!
-  $bio: String
-  $avatar: String
-) {
-  register(
-    params: {
-      email: $email
-      username: $username
-      password: $password
-      bio: $bio
-      avatar: $avatar
-    }
-  ) {
+mutation Register($email: String!, $password: String!) {
+  register(email: $email, password: $password) {
     errors {
       field
       message
